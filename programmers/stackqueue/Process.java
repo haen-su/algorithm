@@ -4,25 +4,23 @@ import java.util.*;
 
 public class Process {
     public int solution(int[] priorities, int location) {
-        int answer = 0;
-        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
-        Queue<int[]> q = new LinkedList<>();
+        int answer = 1;
+        PriorityQueue p = new PriorityQueue<>(Collections.reverseOrder());;
 
-        for(int i = 0; i < priorities.length; i++) {
-            pq.offer(priorities[i]);
-            q.offer(new int[]{i, priorities[i]});
+        for(int i=0; i<priorities.length; i++){
+            p.add(priorities[i]);
+            System.out.println(p);
         }
+        System.out.println(p);
 
-        int priority = pq.poll();
-        while(!pq.isEmpty()) {
-            while(!q.isEmpty()) {
-                int[] poll = q.poll();
-                if(poll[1] == priority) {
+        while(!p.isEmpty()){
+            for(int i=0; i<priorities.length; i++){
+                if(priorities[i] == (int)p.peek()){
+                    if(i == location){
+                        return answer;
+                    }
+                    p.poll();
                     answer++;
-                    if(!pq.isEmpty()) priority = pq.poll();
-                    if(poll[0] == location) return answer;
-                } else {
-                    q.offer(poll);
                 }
             }
         }
@@ -31,6 +29,3 @@ public class Process {
     }
     
 }
-
-// 1234
-// 4123
