@@ -6,7 +6,6 @@ public class DoublePQ {
     public int[] solution(String[] operations) {
         Queue<String> op = new LinkedList<>();
         Queue<Integer> num = new LinkedList<>();
-        Queue<Integer> queue = new LinkedList<>();
         PriorityQueue<Integer> minPQ = new PriorityQueue<>();
         PriorityQueue<Integer> maxPQ = new PriorityQueue<>(Collections.reverseOrder());
 
@@ -17,39 +16,24 @@ public class DoublePQ {
 
         while(!op.isEmpty()) {
             if(op.poll().equals("I")) {
-                queue.offer(num.poll());
+                minPQ.offer(num.peek());
+                maxPQ.offer(num.poll());
             } else {
                 if(num.poll().equals(1)) {
-                    if(!queue.isEmpty()) {
-                        while(!queue.isEmpty()) {
-                            maxPQ.offer(queue.poll());
-                        }
-                        maxPQ.poll();
-                        while(!maxPQ.isEmpty())
-                            queue.offer(maxPQ.poll());
+                    if(!maxPQ.isEmpty()) {
+                        minPQ.remove(maxPQ.poll());
                     }
                 } else {
-                    if(!queue.isEmpty()) {
-                        while(!queue.isEmpty()) {
-                            minPQ.offer(queue.poll());
-                        }
-                        minPQ.poll();
-                        while(!minPQ.isEmpty())
-                            queue.offer(minPQ.poll());
+                    if(!minPQ.isEmpty()) {
+                        maxPQ.remove(minPQ.poll());
                     }
                 }
             }
         }
 
-        if(queue.isEmpty()) return new int[]{0, 0};
-        else {
-           while(!queue.isEmpty()) {
-               int poll = queue.poll();
-               maxPQ.offer(poll);
-               minPQ.offer(poll);
-           }
+        if(minPQ.isEmpty()) return new int[]{0, 0};
+        else
            return new int[]{maxPQ.poll(), minPQ.poll()};
-        }
     }
 
 }
