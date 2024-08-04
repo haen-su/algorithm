@@ -1,4 +1,4 @@
-package programmers.exhaustive_search;
+package programmers.bruteforce;
 
 import java.util.*;
 

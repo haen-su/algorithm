@@ -1,4 +1,4 @@
-package programmers.exhaustive_search;
+package programmers.bruteforce;
 
 public class Carpet {
     public int[] solution(int brown, int yellow) {

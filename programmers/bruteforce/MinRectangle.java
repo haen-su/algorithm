@@ -1,4 +1,4 @@
-package programmers.exhaustive_search;
+package programmers.bruteforce;
 
 public class MinRectangle {
     public int solution(int[][] sizes) {
