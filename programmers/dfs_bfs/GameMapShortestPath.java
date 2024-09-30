@@ -3,41 +3,52 @@ package programmers.dfs_bfs;
 import java.util.*;
 
 public class GameMapShortestPath {
-    int[][] visited;
-    Queue<int[]> q = new LinkedList<>();
-
-    public int solution(int[][] maps) {
-        visited = new int[maps.length][maps[0].length];
-        visited[0][0] = 1;
-        q.offer(new int[]{0, 0});
-        return dfs(maps);
+    class Point {
+        int row, col, dist;
+        Point(int row, int col, int dist) {
+            this.row = row;
+            this.col = col;
+            this.dist = dist;
+        }
     }
 
-    public int dfs(int[][] maps) {
-        while(!q.isEmpty()) {
-            int[] here = q.poll();
-            int r = here[0];
-            int c = here[1];
+    public int solution(int[][] maps) {
+        Queue<Point> queue = new LinkedList<>();
+        boolean[][] visited = new boolean[maps.length][maps[0].length];
 
-            if(r == maps.length - 1 && c == maps[0].length - 1)
-                return visited[maps.length - 1][maps[0].length - 1];
+        queue.add(new Point(0, 0, 1));
+        visited[0][0] = true;
 
-            if(r < maps.length - 1 && visited[r + 1][c] == 0 && maps[r + 1][c] == 1) {
-                q.offer(new int[]{r + 1, c});
-                visited[r + 1][c] += visited[r][c] + 1;
+        while(!queue.isEmpty()) {
+            Point current = queue.poll();
+            int c_r = current.row;
+            int c_c = current.col;
+
+            if(c_r == maps.length - 1 && c_c == maps[0].length - 1)
+                return current.dist;
+
+
+            if(c_r > 0 && maps[c_r - 1][c_c] == 1 && !visited[c_r - 1][c_c]) {
+                visited[c_r - 1][c_c] = true;
+                queue.add(new Point(c_r - 1, c_c, current.dist + 1));
             }
-            if(c < maps[0].length - 1 && visited[r][c + 1] == 0 && maps[r][c + 1] == 1) {
-                q.offer(new int[]{r, c + 1});
-                visited[r][c + 1] = visited[r][c] + 1;
+
+            if(c_r < maps.length - 1 && maps[c_r + 1][c_c] == 1 && !visited[c_r + 1][c_c]) {
+                visited[c_r + 1][c_c] = true;
+                queue.add(new Point(c_r + 1, c_c, current.dist + 1));
             }
-            if(r > 0 && visited[r - 1][c] == 0 && maps[r - 1][c] == 1) {
-                q.offer(new int[]{r - 1, c});
-                visited[r - 1][c] = visited[r][c] + 1;
+
+
+            if(c_c > 0 && maps[c_r][c_c - 1] == 1 && !visited[c_r][c_c - 1]) {
+                visited[c_r][c_c - 1] = true;
+                queue.add(new Point(c_r, c_c - 1, current.dist + 1));
             }
-            if(c > 0 && visited[r][c - 1] == 0 && maps[r][c - 1] == 1) {
-                q.offer(new int[]{r, c - 1});
-                visited[r][c - 1] = visited[r][c] + 1;
+
+            if(c_c < maps[0].length - 1 && maps[c_r][c_c + 1] == 1 && !visited[c_r][c_c + 1]) {
+                visited[c_r][c_c + 1] = true;
+                queue.add(new Point(c_r, c_c + 1, current.dist + 1));
             }
+
         }
 
         return -1;
